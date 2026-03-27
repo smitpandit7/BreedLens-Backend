@@ -17,7 +17,7 @@ CORS(app, resources={r"/*": {"origins": "https://breedlens-frontend.vercel.app"}
 
 # ─── Load model once at startup ───────────────────────────────────────────────
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")
 
 # Load class names saved during training
 with open("class_names.json", "r") as f:
@@ -47,7 +47,7 @@ print(f"✅ Model loaded — {num_classes} breeds on {device}")
 # ─── Image transform (same as val_transform in training) ─────────────────────
 
 transform = transforms.Compose([
-    transforms.Resize((256, 256)),
+    transforms.Resize((224, 224)),
     transforms.CenterCrop(224),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406],
@@ -73,6 +73,7 @@ def predict(image: Image.Image, top_k: int = 3):
             "pct":   round(prob.item() * 100, 2)
         })
     return results
+    del img_tensor, output, probs
 
 # ─── Routes ──────────────────────────────────────────────────────────────────
 # Serve frontend directly from Flask
