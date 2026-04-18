@@ -13,7 +13,9 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)# allows frontend to call this backend
+
+#CORS(app, supports_credentials=True)# allows frontend to call this backend
+CORS(app, origins=["https://breedlens-frontend.vercel.app"])
 
 # ─── Load model once at startup ───────────────────────────────────────────────
 
