@@ -8,6 +8,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 import json
+import gc
 
 import os
 from flask_cors import CORS
@@ -47,6 +48,9 @@ checkpoint = torch.load("dog_breed_model.pth", map_location=device)
 model.load_state_dict(checkpoint["model_state_dict"])
 model.to(device)
 model.eval()
+
+gc.collect()
+torch.set_num_threads(1)
 
 print(f"✅ Model loaded — {num_classes} breeds on {device}")
 
